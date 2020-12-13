@@ -1,0 +1,18 @@
+name: build
+on:
+  push:
+    branches: [main, master, development]
+
+jobs:
+  documentation:
+    runs-on: ubuntu-18.04
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v2
+      - name: Build documentation
+        run: make doc
+      - name: publish PDFs
+        uses: actions/upload-artifact@v2
+        with:
+          name: docs
+          path: *.pdf
