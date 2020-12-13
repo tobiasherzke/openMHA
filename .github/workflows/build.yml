@@ -9,8 +9,14 @@ jobs:
     steps:
       - name: Check out repository
         uses: actions/checkout@v2
+      - name: Install prerequisites (liblsl missing!)
+        run: |
+           sudo apt-get -y update
+           sudo apt-get -y install g++ make libsndfile1-dev libjack-jackd2-dev \
+           jackd2 portaudio19-dev liblo-dev libeigen3-dev doxygen xfig         \
+           graphviz texlive texlive-latex-extra texlive-font-utils
       - name: Build documentation
-        run: make doc
+        run: make -j doc
       - name: publish PDFs
         uses: actions/upload-artifact@v2
         with:
