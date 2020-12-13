@@ -9,11 +9,12 @@ jobs:
     steps:
       - name: Check out repository
         uses: actions/checkout@v2
-      - name: Install prerequisites (liblsl missing!)
+      - name: Install prerequisites
         run: |
+           sudo dpkg -i .gihub/workflows/*.deb
            sudo apt-get -y update
            sudo apt-get -y install g++ make libsndfile1-dev libjack-jackd2-dev \
-           jackd2 portaudio19-dev liblo-dev libeigen3-dev doxygen xfig         \
+           jackd2 portaudio19-dev liblo-dev libeigen3-dev doxygen xfig liblsl  \
            graphviz texlive texlive-latex-extra texlive-font-utils
       - name: Build documentation
         run: make -j doc
