@@ -34,7 +34,7 @@ jobs:
         - {runner: "ubuntu-18.04"  , cpu: "armv7"  , docker: ".github/workflows/DOCKER"}
         - {runner: "ubuntu-18.04"  , cpu: "aarch64", docker: ".github/workflows/DOCKER"}
         - {runner: "ubuntu-16.04"  , cpu: "x86_64" , docker: ""}
-        - {runner: "windows-latest", cpu: "x86_64" , docker: ""}
+        - {runner: "windows-latest", cpu: "x86_64" , docker: "msys2do"}
         - {runner: "macOS-latest"  , cpu: "x86_64" , docker: ""}
     runs-on: ${{matrix.config.runner}}
     env:
