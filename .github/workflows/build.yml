@@ -85,7 +85,7 @@ jobs:
            sudo dpkg -i .github/workflows/*.deb
            sudo apt-get -y update
            sudo apt-get -y install g++ make libsndfile1-dev libjack-jackd2-dev \
-           jackd2 portaudio19-dev liblo-dev libeigen3-dev liblsl
+           jackd2 portaudio19-dev liblo-dev libeigen3-dev liblsl libboost-dev
         shell: bash
         if: ${{runner.os == 'Linux' && matrix.config.docker == ''}}
       - name: Install macOS prerequisites
