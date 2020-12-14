@@ -74,6 +74,9 @@ jobs:
       - name: copy jack headers and lib
         if: ${{ matrix.config.runner == 'windows-latest' }}
         run: cp -r /c/Progra*/Jack/includes/* /mingw64/include && cp /c/Progra*/Jack/lib/libjack64.lib /mingw64/lib/libjack.a
+      - name: clean up cr-lf translation of text files
+        if: ${{ matrix.config.runner == 'windows-latest' }}
+        run: git status && git reset --hard && git status
       # Install qemu support for ARM CPUs and test execution in ARM container.
       - name: Prepare to run commands in docker container for ARM CPU
         if: ${{ matrix.config.cpu == 'armv7' || matrix.config.cpu == 'aarch64' }}
