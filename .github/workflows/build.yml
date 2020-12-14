@@ -66,7 +66,10 @@ jobs:
         if: ${{ matrix.config.runner != 'windows-latest' }}
       - name: check all jvm.dlls for dependencies
         if: ${{ matrix.config.runner == 'windows-latest' }}
-        run: for i in /c/Progra*/[Jj]ava*; do find "$i" -name jvm.dll -exec cygcheck {} \; ; done
+        run: |
+          for location in jdk-11.0.9.1+1/bin/client jdk-11.0.9.1+1/bin/server jdk-13.0.2+8/bin/client jdk-13.0.2+8/bin/server jdk8u275-b01/jre/bin/server
+          do cygcheck /c/Program*Files/Java/$location/jvm.dll
+          done
      - name: uninstall autoconf from msys
         if: ${{ matrix.config.runner == 'windows-latest' }}
         run: pacman -Ss automake && pacman --noconfirm -R autoconf autogen automake-wrapper automake1.6 automake1.7 automake1.8 automake1.9 automake1.10 automake1.11 automake1.12 automake1.13 automake1.14 automake1.15 automake1.16
