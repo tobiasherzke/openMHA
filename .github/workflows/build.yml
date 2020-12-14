@@ -98,7 +98,7 @@ jobs:
         shell: bash
         if: ${{runner.os == 'Linux' && matrix.config.docker == '' &&  && matrix.config.runner != "ubuntu-16.04"}}
       - name: Install macOS prerequisites
-        run: brew install portaudio jack
+        run: brew install portaudio jack boost octave openjdk liblo eigen pkg-config libsndfile
         shell: bash
         if: ${{runner.os == 'macOS'}}
       - name: build
