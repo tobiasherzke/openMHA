@@ -40,6 +40,9 @@ jobs:
     env:
       D: ${{matrix.config.docker}}
       CPU: ${{matrix.config.cpu}}
+    defaults:
+      run:
+        shell: bash
     steps:
       - uses: actions/checkout@v2
       - if: ${{ matrix.config.runner == 'windows-latest' }}
