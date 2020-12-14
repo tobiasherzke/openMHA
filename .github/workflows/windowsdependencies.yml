@@ -1,0 +1,25 @@
+name: windowsdependencies
+on:
+  push:
+    branches: [main, master, development]
+jobs:
+  windowsdependencies:
+    runs-on: "windows-latest"
+    steps:
+      - name: Install Jack
+        run: |
+          vcpkg install jack2
+          vcpkg export jack2 --zip --output-dir=.
+      - name: Upload Jack
+        uses: actions/upload-artifact@v2
+        with:
+          name: jack
+          path: "*.zip"
+      - name: Install Octave
+        run: |
+          choco install octave
+      - name: Upload Octave
+        uses: actions/upload-artifact@v2
+        with:
+          name: octave
+          path: C:\Octave\
