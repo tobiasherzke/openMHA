@@ -85,12 +85,18 @@ jobs:
         run: $D uname -a
       - name: Install Linux prerequisites
         run: |
-           sudo dpkg -i .github/workflows/*.deb
            sudo apt-get -y update
            sudo apt-get -y install g++ make libsndfile1-dev libjack-jackd2-dev \
-           jackd2 portaudio19-dev liblo-dev libeigen3-dev liblsl libboost-dev
+           jackd2 portaudio19-dev liblo-dev libeigen3-dev libboost-dev
         shell: bash
         if: ${{runner.os == 'Linux' && matrix.config.docker == ''}}
+      - name: Install liblsl
+        run: |
+           sudo dpkg -i .github/workflows/*.deb
+           sudo apt-get -y update
+           sudo apt-get -y install liblsl
+        shell: bash
+        if: ${{runner.os == 'Linux' && matrix.config.docker == '' &&  && matrix.config.runner != "ubuntu-16.04"}}
       - name: Install macOS prerequisites
         run: brew install portaudio jack
         shell: bash
