@@ -4,22 +4,56 @@ on:
     branches: [main, master, development]
 
 jobs:
-  documentation:
-    runs-on: ubuntu-18.04
+#  documentation:
+#    runs-on: ubuntu-18.04
+#    steps:
+#      - name: Check out repository
+#        uses: actions/checkout@v2
+#      - name: Install prerequisites
+#        run: |
+#           sudo dpkg -i .github/workflows/*.deb
+#           sudo apt-get -y update
+#           sudo apt-get -y install g++ make libsndfile1-dev libjack-jackd2-dev \
+#           jackd2 portaudio19-dev liblo-dev libeigen3-dev doxygen xfig liblsl  \
+#           graphviz texlive texlive-latex-extra texlive-font-utils
+#      - name: Build documentation
+#        run: make -j doc
+#      - name: publish PDFs
+#        uses: actions/upload-artifact@v2
+#        with:
+#          name: docs
+#          path: "*.pdf"
+
+  openMHA:
+#    needs: documentation
+    strategy:
+      matrix:
+        config:
+        - {runner: "ubuntu-20.04"  , cpu: "x86_64" , docker: ""}
+        - {runner: "ubuntu-18.04"  , cpu: "x86_64" , docker: ""}
+        - {runner: "ubuntu-18.04"  , cpu: "armv7"  , docker: "docker run --rm -i -v $PWD:$PWD --workdir $PWD tobiasherzke/docker-buildenv:mha_armv7-linux-gcc-7"}
+        - {runner: "ubuntu-18.04"  , cpu: "aarch64", docker: "docker run --rm -i -v $PWD:$PWD --env VERBOSE=1 --workdir $PWD tobiasherzke/docker-buildenv:mha_aarch64-linux-gcc-7"}
+        - {runner: "ubuntu-16.04"  , cpu: "x86_64" , docker: ""}
+        - {runner: "windows-latest", cpu: "x86_64" , docker: ""}
+        - {runner: "macOS-latest"  , cpu: "x86_64" , docker: ""}
+    env:
+      D: ${{matrix.config.docker}}
     steps:
-      - name: Check out repository
-        uses: actions/checkout@v2
-      - name: Install prerequisites
+      - uses: actions/checkout@v2
+      # Install qemu support for ARM CPUs and test execution in ARM container.
+      - name: Prepare to run commands in docker container for ARM CPU
+        if: ${{ matrix.config.cpu == 'armv7' || matrix.config.cpu == 'aarch64' }}
         run: |
-           sudo dpkg -i .github/workflows/*.deb
+           uname -a
+           systemctl status binfmt-support || true
            sudo apt-get -y update
-           sudo apt-get -y install g++ make libsndfile1-dev libjack-jackd2-dev \
-           jackd2 portaudio19-dev liblo-dev libeigen3-dev doxygen xfig liblsl  \
-           graphviz texlive texlive-latex-extra texlive-font-utils
-      - name: Build documentation
-        run: make -j doc
-      - name: publish PDFs
-        uses: actions/upload-artifact@v2
-        with:
-          name: docs
-          path: "*.pdf"
+           sudo apt-get -y install qemu-user-static
+           git clone https://github.com/computermouth/qemu-static-conf.git
+           sudo mkdir -p /lib/binfmt.d
+           sudo cp qemu-static-conf/*.conf /lib/binfmt.d/
+           rm -rf qemu-static-conf
+           sudo systemctl restart systemd-binfmt.service
+           systemctl status binfmt-support
+       - name: check
+         run: $D uname -a
+         
