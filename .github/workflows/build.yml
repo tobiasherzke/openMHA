@@ -64,6 +64,9 @@ jobs:
       - run: sudo ln -s /bin/bash /usr/local/bin/msys2
         shell: bash
         if: ${{ matrix.config.runner != 'windows-latest' }}
+      - name: uninstall autoconf from msys
+        if: ${{ matrix.config.runner == 'windows-latest' }}
+        run: pacman -R autoconf
       # Install qemu support for ARM CPUs and test execution in ARM container.
       - name: Prepare to run commands in docker container for ARM CPU
         if: ${{ matrix.config.cpu == 'armv7' || matrix.config.cpu == 'aarch64' }}
