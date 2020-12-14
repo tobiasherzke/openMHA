@@ -65,4 +65,5 @@ jobs:
            systemctl status binfmt-support
       - name: check
         run: $D uname -a
-         
+      - name: build
+        run: $D make -j test unit-tests install
