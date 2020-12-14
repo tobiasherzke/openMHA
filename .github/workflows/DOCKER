@@ -1,0 +1,2 @@
+#!/bin/bash
+docker run --rm -i -v $PWD:$PWD --workdir $PWD hoertech/docker-buildenv:mha_$CPU-linux-gcc-7 "$@"
