@@ -67,9 +67,11 @@ jobs:
       - name: check all jvm.dlls for dependencies
         if: ${{ matrix.config.runner == 'windows-latest' }}
         run: |
-          for location in jdk-11.0.9.1+1/bin/client jdk-11.0.9.1+1/bin/server jdk-13.0.2+8/bin/client jdk-13.0.2+8/bin/server jdk8u275-b01/jre/bin/server
-          do cygcheck /c/Program*Files/Java/$location/jvm.dll
-          done
+          cygcheck /c/Program*Files/Java/jdk-11.0.9.1+1/bin/client/jvm.dll
+          cygcheck /c/Program*Files/Java/jdk-11.0.9.1+1/bin/server/jvm.dll
+          cygcheck /c/Program*Files/Java/jdk-13.0.2+8/bin/client/jvm.dll
+          cygcheck /c/Program*Files/Java/jdk-13.0.2+8/bin/server/jvm.dll
+          cygcheck /c/Program*Files/Java/jdk8u275-b01/jre/bin/server/jvm.dll
      - name: uninstall autoconf from msys
         if: ${{ matrix.config.runner == 'windows-latest' }}
         run: pacman -Ss automake && pacman --noconfirm -R autoconf autogen automake-wrapper automake1.6 automake1.7 automake1.8 automake1.9 automake1.10 automake1.11 automake1.12 automake1.13 automake1.14 automake1.15 automake1.16
