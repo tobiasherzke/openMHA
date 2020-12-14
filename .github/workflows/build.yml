@@ -67,13 +67,17 @@ jobs:
       - name: uninstall autoconf from msys
         if: ${{ matrix.config.runner == 'windows-latest' }}
         run: pacman -Ss automake && pacman --noconfirm -R autoconf autogen automake-wrapper automake1.6 automake1.7 automake1.8 automake1.9 automake1.10 automake1.11 automake1.12 automake1.13 automake1.14 automake1.15 automake1.16
-      - name: install jack
+      - name: install jack and octave
         if: ${{ matrix.config.runner == 'windows-latest' }}
-        run: choco install jack
+        run: choco install jack octave
         shell: powershell
-      - name: copy jack headers and lib
+      - name: make jack and octave usable from msys2/mingw
         if: ${{ matrix.config.runner == 'windows-latest' }}
-        run: cp -r /c/Progra*/Jack/includes/* /mingw64/include && cp /c/Progra*/Jack/lib/libjack64.lib /mingw64/lib/libjack.a
+        run: |
+          cp -v -r /c/Progra*/Jack/includes/* /mingw64/include
+          cp -v /c/Progra*/Jack/lib/libjack64.lib /mingw64/lib/libjack.a
+          echo '#!/bin/bash' >/usr/bin/octave
+          echo /c/Octave/Octave-*/mingw64/bin/octave-cli.exe '"$@"' >>/usr/bin/octave
       - name: clean up cr-lf translation of text files
         if: ${{ matrix.config.runner == 'windows-latest' }}
         run: git status && git reset --hard && git status
