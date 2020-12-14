@@ -41,6 +41,7 @@ jobs:
     env:
       D: ${{matrix.config.docker}}
       CPU: ${{matrix.config.cpu}}
+      JAVA_HOME: c:\Program Files\Java\jdk-11.0.9.1+1
     defaults:
       run:
         shell: msys2 {0}
