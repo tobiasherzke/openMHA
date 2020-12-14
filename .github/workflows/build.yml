@@ -31,8 +31,8 @@ jobs:
         config:
         - {runner: "ubuntu-20.04"  , cpu: "x86_64" , docker: ""}
         - {runner: "ubuntu-18.04"  , cpu: "x86_64" , docker: ""}
-        - {runner: "ubuntu-18.04"  , cpu: "armv7"  , docker: "docker run --rm -i -v $PWD:$PWD --workdir $PWD tobiasherzke/docker-buildenv:mha_armv7-linux-gcc-7"}
-        - {runner: "ubuntu-18.04"  , cpu: "aarch64", docker: "docker run --rm -i -v $PWD:$PWD --env VERBOSE=1 --workdir $PWD tobiasherzke/docker-buildenv:mha_aarch64-linux-gcc-7"}
+        - {runner: "ubuntu-18.04"  , cpu: "armv7"  , docker: "docker run --rm -i -v `pwd`:`pwd` --workdir `pwd` hoertech/docker-buildenv:mha_armv7-linux-gcc-7"}
+        - {runner: "ubuntu-18.04"  , cpu: "aarch64", docker: "docker run --rm -i -v `pwd`:`pwd` --workdir `pwd` hoertech/docker-buildenv:mha_aarch64-linux-gcc-7"}
         - {runner: "ubuntu-16.04"  , cpu: "x86_64" , docker: ""}
         - {runner: "windows-latest", cpu: "x86_64" , docker: ""}
         - {runner: "macOS-latest"  , cpu: "x86_64" , docker: ""}
@@ -41,6 +41,10 @@ jobs:
       D: ${{matrix.config.docker}}
     steps:
       - uses: actions/checkout@v2
+      - if: ${{ matrix.config.runner == 'windows-latest' }}
+        uses: msys2/setup-msys2@v2
+        with:
+          release: false
       # Install qemu support for ARM CPUs and test execution in ARM container.
       - name: Prepare to run commands in docker container for ARM CPU
         if: ${{ matrix.config.cpu == 'armv7' || matrix.config.cpu == 'aarch64' }}
