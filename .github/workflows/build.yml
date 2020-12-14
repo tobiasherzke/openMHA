@@ -36,6 +36,7 @@ jobs:
         - {runner: "ubuntu-16.04"  , cpu: "x86_64" , docker: ""}
         - {runner: "windows-latest", cpu: "x86_64" , docker: ""}
         - {runner: "macOS-latest"  , cpu: "x86_64" , docker: ""}
+    runs-on: ${{matrix.config.runner}}
     env:
       D: ${{matrix.config.docker}}
     steps:
