@@ -96,4 +96,4 @@ jobs:
         shell: bash
         if: ${{runner.os == 'macOS'}}
       - name: build
-        run: $D make -j test unit-tests install
+        run: $D make test unit-tests install
