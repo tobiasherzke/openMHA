@@ -51,7 +51,7 @@ jobs:
         with:
           release: false
           install: >-
-               sys/git
+               msys/git
                mingw64/mingw-w64-x86_64-gcc
                msys/make
                tar
