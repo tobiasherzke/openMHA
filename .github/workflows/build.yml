@@ -100,6 +100,7 @@ jobs:
       - name: Install macOS prerequisites
         run: |
           brew install portaudio jack boost octave openjdk liblo eigen pkg-config libsndfile
+          octave --eval 'pkg install -forge control;quit'
           octave --eval 'pkg install -forge signal;quit'
         shell: bash
         if: ${{runner.os == 'macOS'}}
