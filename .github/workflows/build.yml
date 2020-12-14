@@ -96,7 +96,7 @@ jobs:
            sudo apt-get -y update
            sudo apt-get -y install liblsl
         shell: bash
-        if: ${{runner.os == 'Linux' && matrix.config.docker == '' &&  && matrix.config.runner != "ubuntu-16.04"}}
+        if: ${{runner.os == 'Linux' && matrix.config.docker == '' && matrix.config.runner != "ubuntu-16.04"}}
       - name: Install macOS prerequisites
         run: brew install portaudio jack boost octave openjdk liblo eigen pkg-config libsndfile
         shell: bash
