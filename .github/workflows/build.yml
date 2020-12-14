@@ -72,7 +72,7 @@ jobs:
           cygcheck /c/Program*Files/Java/jdk-13.0.2+8/bin/client/jvm.dll
           cygcheck /c/Program*Files/Java/jdk-13.0.2+8/bin/server/jvm.dll
           cygcheck /c/Program*Files/Java/jdk8u275-b01/jre/bin/server/jvm.dll
-     - name: uninstall autoconf from msys
+      - name: uninstall autoconf from msys
         if: ${{ matrix.config.runner == 'windows-latest' }}
         run: pacman -Ss automake && pacman --noconfirm -R autoconf autogen automake-wrapper automake1.6 automake1.7 automake1.8 automake1.9 automake1.10 automake1.11 automake1.12 automake1.13 automake1.14 automake1.15 automake1.16
       - name: install jack and octave
