@@ -69,5 +69,13 @@ jobs:
            systemctl status binfmt-support
       - name: check
         run: $D uname -a
+      - name: Install prerequisites
+        run: |
+           sudo dpkg -i .github/workflows/*.deb
+           sudo apt-get -y update
+           sudo apt-get -y install g++ make libsndfile1-dev libjack-jackd2-dev \
+           jackd2 portaudio19-dev liblo-dev libeigen3-dev liblsl
+        shell: bash
+        if: ${{runner.os == 'Linux'}}
       - name: build
         run: $D make -j test unit-tests install
