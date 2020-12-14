@@ -17,7 +17,6 @@
 #include "mha_toolbox.h"
 #include "mha_signal.hh"
 #include "mha_events.h"
-#include <jack/jack.h>
 #include <math.h>
 #include "mhajack.h"
 #include <unistd.h>

@@ -17,7 +17,9 @@
 #define MHAJACK_H
 
 #include <stdint.h>
+#define register // Jack headers specify storage class "register"
 #include <jack/jack.h>
+#undef register
 #include "mha_io_ifc.h"
 #include "mha_signal.hh"
 
