@@ -54,6 +54,6 @@ jobs:
            rm -rf qemu-static-conf
            sudo systemctl restart systemd-binfmt.service
            systemctl status binfmt-support
-       - name: check
-         run: $D uname -a
+      - name: check
+        run: $D uname -a
          
