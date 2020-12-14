@@ -42,13 +42,16 @@ jobs:
       CPU: ${{matrix.config.cpu}}
     defaults:
       run:
-        shell: bash
+        shell: msys2 {0}
     steps:
       - uses: actions/checkout@v2
       - if: ${{ matrix.config.runner == 'windows-latest' }}
         uses: msys2/setup-msys2@v2
         with:
           release: false
+      - run: sudo ln -s /bin/bash /bin/msys2
+        shell: bash
+        if: ${{ matrix.config.runner != 'windows-latest' }}
       # Install qemu support for ARM CPUs and test execution in ARM container.
       - name: Prepare to run commands in docker container for ARM CPU
         if: ${{ matrix.config.cpu == 'armv7' || matrix.config.cpu == 'aarch64' }}
