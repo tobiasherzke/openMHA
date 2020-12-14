@@ -78,20 +78,22 @@ jobs:
         run: pacman -Ss automake && pacman --noconfirm -R autoconf autogen automake-wrapper automake1.6 automake1.7 automake1.8 automake1.9 automake1.10 automake1.11 automake1.12 automake1.13 automake1.14 automake1.15 automake1.16
       - name: install jack and octave
         if: ${{ matrix.config.runner == 'windows-latest' }}
-        run: choco install jack octave
+        run: |
+          choco install octave
+          vcpkg install jack2
         shell: powershell
       - name: make jack and octave usable from msys2/mingw
         if: ${{ matrix.config.runner == 'windows-latest' }}
         run: |
-          cp -v -r /c/Progra*/Jack/includes/* /mingw64/include
-          cp -v /c/Progra*/Jack/lib/libjack64.lib /mingw64/lib/libjack.a
           echo '#!/bin/bash' >/usr/bin/octave
           echo /c/Octave/Octave-*/mingw64/bin/octave-cli.exe '"$@"' >>/usr/bin/octave
           file /c/Octave/Octave-*/mingw64/bin/octave-cli.exe
           cat /usr/bin/octave
+          octave --eval 'javaclasspath;quit'
           for i in /c/Progra*/[Jj]ava*; do find "$i" -name jvm.dll; done
           for i in /c/Progra*/[Jj]ava*; do find "$i" -name jvm.dll -exec file {} \; ; done
-          octave --eval 'javaclasspath;quit'
+          cp -v -r /c/Progra*/Jack/includes/* /mingw64/include
+          cp -v /c/Progra*/Jack/lib/libjack64.lib /mingw64/lib/libjack.a
       - name: clean up cr-lf translation of text files
         if: ${{ matrix.config.runner == 'windows-latest' }}
         run: git status && git reset --hard && git status
