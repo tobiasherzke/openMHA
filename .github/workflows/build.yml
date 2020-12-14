@@ -27,6 +27,7 @@ jobs:
   openMHA:
 #    needs: documentation
     strategy:
+      fail-fast: false
       matrix:
         config:
         - {runner: "ubuntu-20.04"  , cpu: "x86_64" , docker: ""}
@@ -49,7 +50,7 @@ jobs:
         uses: msys2/setup-msys2@v2
         with:
           release: false
-      - run: sudo ln -s /bin/bash /bin/msys2
+      - run: sudo ln -s /bin/bash /usr/local/bin/msys2
         shell: bash
         if: ${{ matrix.config.runner != 'windows-latest' }}
       # Install qemu support for ARM CPUs and test execution in ARM container.
