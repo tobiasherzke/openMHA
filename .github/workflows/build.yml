@@ -50,6 +50,17 @@ jobs:
         uses: msys2/setup-msys2@v2
         with:
           release: false
+          install: >-
+               sys/git
+               mingw64/mingw-w64-x86_64-gcc
+               msys/make
+               tar
+               mingw64/mingw-w64-x86_64-boost
+               openbsd-netcat
+               mingw-w64-x86_64-libsndfile
+               mingw-w64-x86_64-portaudio
+               mingw64/mingw-w64-x86_64-nsis
+               mingw-w64-x86_64-eigen3
       - run: sudo ln -s /bin/bash /usr/local/bin/msys2
         shell: bash
         if: ${{ matrix.config.runner != 'windows-latest' }}
@@ -69,13 +80,17 @@ jobs:
            systemctl status binfmt-support
       - name: check
         run: $D uname -a
-      - name: Install prerequisites
+      - name: Install Linux prerequisites
         run: |
            sudo dpkg -i .github/workflows/*.deb
            sudo apt-get -y update
            sudo apt-get -y install g++ make libsndfile1-dev libjack-jackd2-dev \
            jackd2 portaudio19-dev liblo-dev libeigen3-dev liblsl
         shell: bash
-        if: ${{runner.os == 'Linux'}}
+        if: ${{runner.os == 'Linux' && matrix.config.docker == ''}}
+      - name: Install macOS prerequisites
+        run: brew install portaudio jack
+        shell: bash
+        if: ${{runner.os == 'macOS'}}
       - name: build
         run: $D make -j test unit-tests install
