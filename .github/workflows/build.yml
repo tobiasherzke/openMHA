@@ -36,7 +36,7 @@ jobs:
 #        - {runner: "ubuntu-18.04"  , cpu: "aarch64", docker: ".github/workflows/DOCKER"}
 #        - {runner: "ubuntu-16.04"  , cpu: "x86_64" , docker: ""}
         - {runner: "windows-latest", cpu: "x86_64" , docker: ""}
-        - {runner: "macOS-latest"  , cpu: "x86_64" , docker: ""}
+#        - {runner: "macOS-latest"  , cpu: "x86_64" , docker: ""}
     runs-on: ${{matrix.config.runner}}
     env:
       D: ${{matrix.config.docker}}
@@ -64,7 +64,10 @@ jobs:
       - run: sudo ln -s /bin/bash /usr/local/bin/msys2
         shell: bash
         if: ${{ matrix.config.runner != 'windows-latest' }}
-      - name: uninstall autoconf from msys
+      - name: check all jvm.dlls for dependencies
+        if: ${{ matrix.config.runner == 'windows-latest' }}
+        run: for i in /c/Progra*/[Jj]ava*; do find "$i" -name jvm.dll -exec cygcheck {} \; ; done
+     - name: uninstall autoconf from msys
         if: ${{ matrix.config.runner == 'windows-latest' }}
         run: pacman -Ss automake && pacman --noconfirm -R autoconf autogen automake-wrapper automake1.6 automake1.7 automake1.8 automake1.9 automake1.10 automake1.11 automake1.12 automake1.13 automake1.14 automake1.15 automake1.16
       - name: install jack and octave
